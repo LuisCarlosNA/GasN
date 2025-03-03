@@ -4,8 +4,12 @@ const PedidosScreen = () => {
   const [pedidos, setPedidos] = useState({});
   const [loading, setLoading] = useState(true);
 
+  // Nueva variable de estado para manejar la respuesta de la API externa
+  const [dataExterna, setDataExterna] = useState(null);
+
   useEffect(() => {
     fetchPedidos();
+    fetchDataExterna(); // Nueva llamada a la API externa
   }, []);
 
   const fetchPedidos = async () => {
@@ -23,6 +27,24 @@ const PedidosScreen = () => {
       alert("Ocurrió un error al consultar los pedidos.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Nueva función para obtener datos de la API externa
+  const fetchDataExterna = async () => {
+    try {
+      const response = await fetch("https://datanexus-nzfk.onrender.com");
+      const data = await response.json();
+
+      if (response.ok) {
+        setDataExterna(data); // Guarda la respuesta en el estado
+        console.log(data); // Puedes mostrar los datos en la consola si lo necesitas
+      } else {
+        alert("Error al obtener datos de la API externa.");
+      }
+    } catch (error) {
+      console.error("Error al consultar la API externa:", error);
+      alert("Ocurrió un error al consultar la API externa.");
     }
   };
 
@@ -225,7 +247,6 @@ const PedidosScreen = () => {
         Descargar Excel
       </button>
     </div>
-    
   );
 };
 

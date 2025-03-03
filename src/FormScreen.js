@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import API_URL from './config'; // Importa la URL de la API
 
 const FormScreen = () => {
   const [formData, setFormData] = useState({
@@ -29,7 +30,7 @@ const FormScreen = () => {
 
   const fetchHistorico = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:5000/consultar_pedidos');
+      const response = await fetch(`${API_URL}/consultar_pedidos`); // Usa API_URL
       const data = await response.json();
       if (response.ok) {
         const pedidosArray = Object.values(data).flat();
@@ -70,7 +71,7 @@ const FormScreen = () => {
     const dataToSend = { ...formData, Hora: horaRegistro };
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/guardar_pedido', {
+      const response = await fetch(`${API_URL}/guardar_pedido`, { // Usa API_URL
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dataToSend),
