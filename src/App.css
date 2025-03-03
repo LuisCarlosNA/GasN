@@ -1,0 +1,82 @@
+/* Estilos generales */
+body {
+  font-family: 'Arial, sans-serif';
+  background-color: #595958; /* Fondo principal */
+  color: #D9B504; /* Texto principal */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Contenedor principal */
+.container {
+  background-color: #024059; /* Fondo del formulario */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 600px;
+  width: 100%;
+}
+
+/* Título del formulario */
+h1 {
+  color: #D9A60D;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+/* Estilo del formulario */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Estilo de los inputs y selects */
+input,
+select {
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #8C5C03;
+  border-radius: 5px;
+  background-color: #BF9004;
+  color: #fff;
+}
+
+input::placeholder {
+  color: #D9B504;
+}
+
+input:focus,
+select:focus {
+  border-color: #D9A60D;
+  outline: none;
+}
+
+/* Botón */
+button {
+  padding: 10px;
+  font-size: 18px;
+  color: #fff;
+  background-color: #8C4E03;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #732C02;
+}
+
+/* Estilo para mensajes */
+.alert {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #D9A60D;
+  text-align: center;
+}
