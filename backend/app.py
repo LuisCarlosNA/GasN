@@ -136,4 +136,5 @@ def descargar_excel():
     return send_file(temp_file.name, as_attachment=True, download_name="Pedidos.xlsx")
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    from waitress import serve  # Alternativa a gunicorn en Windows
+    serve(app, host='0.0.0.0', port=5000)
