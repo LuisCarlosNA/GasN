@@ -29,7 +29,7 @@ const MainScreen = () => {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>Bienvenido</h1>
+      <h1 style={styles.title}>Bienvenid@</h1>
       <div style={styles.buttonContainer}>
         <button onClick={() => navigate('/form')} style={styles.button}>
           Ir al Formulario
