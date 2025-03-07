@@ -33,7 +33,7 @@ const PedidosScreen = () => {
   // Nueva función para obtener datos de la API externa
   const fetchDataExterna = async () => {
     try {
-      const response = await fetch("https://datanexus-abrs.onrender.com");
+      const response = await fetch("https://datanexus-80fu.onrender.com");
       const data = await response.json();
 
       if (response.ok) {
