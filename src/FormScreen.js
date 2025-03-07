@@ -13,6 +13,7 @@ const FormScreen = () => {
   });
 
   const [historico, setHistorico] = useState([]);
+  const [loading, setLoading] = useState(true); // Estado para indicar carga
 
   const getLocalDate = () => {
     const hoy = new Date();
@@ -31,13 +32,15 @@ const FormScreen = () => {
   const fetchHistorico = async () => {
     try {
       const response = await fetch(`${API_URL}/consultar_pedidos`); // Usa API_URL
+      if (!response.ok) throw new Error('Error al obtener pedidos');
+
       const data = await response.json();
-      if (response.ok) {
-        const pedidosArray = Object.values(data).flat();
-        setHistorico(pedidosArray);
-      }
+      const pedidosArray = Object.values(data).flat();
+      setHistorico(pedidosArray);
     } catch (error) {
       console.error('Error al obtener pedidos:', error);
+    } finally {
+      setLoading(false); // Indica que terminó de cargar
     }
   };
 
@@ -106,20 +109,25 @@ const FormScreen = () => {
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Registrar Pedido</h1>
-      <form style={styles.form} onSubmit={(e) => e.preventDefault()}>
-        <input name="Fecha" type="date" value={formData.Fecha} onChange={handleChange} style={styles.input} />
-        <select name="TipoServicio" value={formData.TipoServicio} onChange={handleChange} style={styles.input}>
-          <option value="">Selecciona Tipo de Servicio</option>
-          <option value="Cilindro">Cilindro</option>
-          <option value="Estacionario">Estacionario</option>
-        </select>
-        <input name="Colonia" type="text" placeholder="Colonia" value={formData.Colonia} onChange={handleChange} style={styles.input} />
-        <input name="Direccion" type="text" placeholder="Dirección" value={formData.Direccion} onChange={handleChange} style={styles.input} />
-        <input name="Nombre" type="text" placeholder="Nombre" value={formData.Nombre} onChange={handleChange} style={styles.input} />
-        <input name="Telefono" type="tel" placeholder="Teléfono" value={formData.Telefono} onChange={handleChange} style={styles.input} />
-        <textarea name="Observaciones" placeholder="Observaciones" value={formData.Observaciones} onChange={handleChange} style={styles.textarea} />
-        <button type="button" onClick={handleSubmit} style={styles.button}>Guardar Pedido</button>
-      </form>
+
+      {loading ? (
+        <p>Cargando datos...</p> // Muestra mensaje mientras la API despierta
+      ) : (
+        <form style={styles.form} onSubmit={(e) => e.preventDefault()}>
+          <input name="Fecha" type="date" value={formData.Fecha} onChange={handleChange} style={styles.input} />
+          <select name="TipoServicio" value={formData.TipoServicio} onChange={handleChange} style={styles.input}>
+            <option value="">Selecciona Tipo de Servicio</option>
+            <option value="Cilindro">Cilindro</option>
+            <option value="Estacionario">Estacionario</option>
+          </select>
+          <input name="Colonia" type="text" placeholder="Colonia" value={formData.Colonia} onChange={handleChange} style={styles.input} />
+          <input name="Direccion" type="text" placeholder="Dirección" value={formData.Direccion} onChange={handleChange} style={styles.input} />
+          <input name="Nombre" type="text" placeholder="Nombre" value={formData.Nombre} onChange={handleChange} style={styles.input} />
+          <input name="Telefono" type="tel" placeholder="Teléfono" value={formData.Telefono} onChange={handleChange} style={styles.input} />
+          <textarea name="Observaciones" placeholder="Observaciones" value={formData.Observaciones} onChange={handleChange} style={styles.textarea} />
+          <button type="button" onClick={handleSubmit} style={styles.button}>Guardar Pedido</button>
+        </form>
+      )}
     </div>
   );
 };

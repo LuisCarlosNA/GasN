@@ -3,18 +3,18 @@ import React, { useEffect, useState } from "react";
 const PedidosScreen = () => {
   const [pedidos, setPedidos] = useState({});
   const [loading, setLoading] = useState(true);
-
-  // Nueva variable de estado para manejar la respuesta de la API externa
   const [dataExterna, setDataExterna] = useState(null);
 
   useEffect(() => {
     fetchPedidos();
-    fetchDataExterna(); // Nueva llamada a la API externa
+    fetchDataExterna();
   }, []);
+
+  const API_BASE_URL = "https://datanexus-80fu.onrender.com";
 
   const fetchPedidos = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:5000/consultar_pedidos");
+      const response = await fetch(`${API_BASE_URL}/consultar_pedidos`);
       const data = await response.json();
 
       if (response.ok) {
@@ -30,15 +30,13 @@ const PedidosScreen = () => {
     }
   };
 
-  // Nueva función para obtener datos de la API externa
   const fetchDataExterna = async () => {
     try {
-      const response = await fetch("https://datanexus-80fu.onrender.com");
+      const response = await fetch(API_BASE_URL);
       const data = await response.json();
 
       if (response.ok) {
-        setDataExterna(data); // Guarda la respuesta en el estado
-        console.log(data); // Puedes mostrar los datos en la consola si lo necesitas
+        setDataExterna(data);
       } else {
         alert("Error al obtener datos de la API externa.");
       }
