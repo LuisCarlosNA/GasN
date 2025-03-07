@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import API_URL from "./config"; // Importa la URL base desde el archivo de configuración
 
 const PedidosScreen = () => {
   const [pedidos, setPedidos] = useState({});
@@ -10,11 +11,9 @@ const PedidosScreen = () => {
     fetchDataExterna();
   }, []);
 
-  const API_BASE_URL = "https://datanexus-80fu.onrender.com";
-
   const fetchPedidos = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/consultar_pedidos`);
+      const response = await fetch(`${API_URL}/consultar_pedidos`);
       const data = await response.json();
 
       if (response.ok) {
@@ -32,7 +31,7 @@ const PedidosScreen = () => {
 
   const fetchDataExterna = async () => {
     try {
-      const response = await fetch(API_BASE_URL);
+      const response = await fetch(API_URL);
       const data = await response.json();
 
       if (response.ok) {
@@ -48,7 +47,7 @@ const PedidosScreen = () => {
 
   const eliminarPedido = async (fecha, index) => {
     try {
-      const response = await fetch("http://127.0.0.1:5000/eliminar_pedido", {
+      const response = await fetch(`${API_URL}/eliminar_pedido`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ Fecha: fecha, Index: index }),
@@ -73,7 +72,7 @@ const PedidosScreen = () => {
     }
 
     try {
-      await fetch("http://127.0.0.1:5000/actualizar_estatus", {
+      await fetch(`${API_URL}/actualizar_estatus`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ Fecha: fecha, Index: index, Estatus: nuevoEstatus }),
@@ -89,7 +88,7 @@ const PedidosScreen = () => {
 
   const descargarExcel = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:5000/descargar_excel", {
+      const response = await fetch(`${API_URL}/descargar_excel`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(pedidos),
@@ -114,7 +113,7 @@ const PedidosScreen = () => {
 
   const actualizarExcel = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:5000/actualizar_excel", {
+      const response = await fetch(`${API_URL}/actualizar_excel`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(pedidos),
@@ -139,7 +138,7 @@ const PedidosScreen = () => {
 
   const eliminarPedidosPorFecha = async (fecha) => {
     try {
-      const response = await fetch("http://127.0.0.1:5000/eliminar_pedidos_fecha", {
+      const response = await fetch(`${API_URL}/eliminar_pedidos_fecha`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ Fecha: fecha }),
@@ -170,7 +169,7 @@ const PedidosScreen = () => {
         Object.keys(pedidos).map((fecha, index) => {
           const pedidosFecha = pedidos[fecha];
 
-          // 📌 Calcular el resumen
+          // Calcular el resumen
           const totalPedidos = pedidosFecha.length;
           const cilindros = pedidosFecha.filter((p) => p.TipoServicio === "Cilindro").length;
           const estacionarios = pedidosFecha.filter((p) => p.TipoServicio === "Estacionario").length;
@@ -230,7 +229,7 @@ const PedidosScreen = () => {
                 Eliminar Todos los Pedidos de {fecha}
               </button>
 
-              {/* 📌 Agregar resumen debajo de la tabla */}
+              {/* Resumen debajo de la tabla */}
               <div style={styles.summaryContainer}>
                 <p style={styles.summaryText}><strong>{fecha}</strong></p>
                 <p style={styles.summaryText}>Llamadas totales: {totalPedidos}</p>
@@ -251,83 +250,80 @@ const PedidosScreen = () => {
 const styles = {
   container: {
     padding: "20px",
-    fontFamily: "Arial, sans-serif"
+    fontFamily: "Arial, sans-serif",
   },
   title: {
     fontSize: "2rem",
     textAlign: "center",
-    marginBottom: "20px"
+    marginBottom: "20px",
   },
   tableContainer: {
-    marginBottom: "20px"
+    marginBottom: "20px",
   },
   subtitle: {
     fontSize: "1.5rem",
-    marginBottom: "10px"
+    marginBottom: "10px",
   },
   table: {
     width: "100%",
     borderCollapse: "collapse",
-    marginBottom: "20px"
+    marginBottom: "20px",
   },
   th: {
     backgroundColor: "#031D40",
     color: "#FFF",
     border: "1px solid #000",
-    padding: "10px"
+    padding: "10px",
   },
   td: {
     border: "1px solid #000",
     padding: "10px",
-    textAlign: "left"
+    textAlign: "left",
   },
   select: {
     padding: "5px",
     borderRadius: "4px",
-    border: "1px solid #ccc"
+    border: "1px solid #ccc",
   },
   deleteButton: {
     padding: "5px 10px",
-    backgroundColor: "#d9534f",
-    color: "#fff",
-    border: "none",
-    cursor: "pointer"
-  },
-deleteAllButton: {
-  padding: "10px",
-  backgroundColor: "#d9534f",
-  color: "#fff",
-  border: "none",
-  cursor: "pointer",
-  width: "100%",
-  marginTop: "10px"
-},
-  button: {
-    marginTop: "10px",
-    padding: "5px 10px",
-    backgroundColor: "#031D40",
+    backgroundColor: "#F44336",
     color: "#FFF",
-    cursor: "pointer",
-    display: "block",
-    width: "150px",
     border: "none",
-    textAlign: "center"
+    cursor: "pointer",
+  },
+  deleteAllButton: {
+    padding: "5px 10px",
+    backgroundColor: "#F44336",
+    color: "#FFF",
+    border: "none",
+    cursor: "pointer",
+  },
+  button: {
+    padding: "10px 20px",
+    backgroundColor: "#4CAF50",
+    color: "#FFF",
+    border: "none",
+    fontSize: "16px",
+    cursor: "pointer",
   },
   summaryContainer: {
-    marginTop: "20px"
+    marginTop: "20px",
+    padding: "10px",
+    backgroundColor: "#f4f4f4",
+    borderRadius: "4px",
   },
   summaryText: {
-    fontSize: "1rem",
-    margin: "5px 0"
+    fontSize: "14px",
+    marginBottom: "5px",
   },
   loading: {
+    textAlign: "center",
     fontSize: "1.5rem",
-    textAlign: "center"
   },
   noPedidos: {
-    fontSize: "1.2rem",
     textAlign: "center",
-    color: "#d9534f"
+    fontSize: "1.2rem",
   },
 };
 
