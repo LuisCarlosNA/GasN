@@ -7,8 +7,13 @@ const PedidosScreen = () => {
   const [dataExterna, setDataExterna] = useState(null);
 
   useEffect(() => {
-    fetchPedidos();
-    fetchDataExterna();
+    const pedidosGuardados = localStorage.getItem("pedidos");
+    if (pedidosGuardados) {
+      setPedidos(JSON.parse(pedidosGuardados));
+      setLoading(false);
+    } else {
+      fetchPedidos();
+    }
   }, []);
 
   const fetchPedidos = async () => {
@@ -18,6 +23,7 @@ const PedidosScreen = () => {
 
       if (response.ok) {
         setPedidos(data);
+        savePedidosToLocalStorage(data); // Guardar los pedidos en localStorage
       } else {
         alert(data.message);
       }
@@ -27,6 +33,10 @@ const PedidosScreen = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const savePedidosToLocalStorage = (data) => {
+    localStorage.setItem("pedidos", JSON.stringify(data)); // Guardar en localStorage
   };
 
   const fetchDataExterna = async () => {
@@ -324,6 +334,7 @@ const styles = {
   noPedidos: {
     textAlign: "center",
     fontSize: "1.2rem",
+    color: "#FF5722",
   },
 };
 
